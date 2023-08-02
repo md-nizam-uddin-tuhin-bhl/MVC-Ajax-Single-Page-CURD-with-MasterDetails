@@ -1,0 +1,86 @@
+﻿@model WebApplication1.ViewModels.VmSale
+@{
+    ViewBag.Title = "Single";
+    var listSaleMaster = ViewData["List"] as List<WebApplication1.Models.SaleMaster>;
+    var CreateDate = Model.CreateDate == null ? "" :
+    Convert.ToDateTime(Model.CreateDate).ToString("yyyy-MM-dd");
+    var ButtonValue = Model.SaleId > 0 ? "Update" : "Add";
+    var indexItem = 0;
+}
+<h2>Single page Application with Razor Ajax</h2>
+@using (Ajax.BeginForm(
+        "Single",
+        "MvcAjax",
+        new AjaxOptions
+        {
+           
+            HttpMethod = "POST"
+        }
+  
+    ))
+{
+ 
+    @Html.HiddenFor(m => m.SaleId)
+    @Html.LabelFor(m => m.CreateDate)
+    <br />
+    <input type="date" id="CreateDate" name="CreateDate"
+           value="@CreateDate" />
+    <br />
+    @Html.LabelFor(m => m.CustomerName)
+    <br />
+    @Html.TextBoxFor(m => m.CustomerName)
+    <br />
+    @Html.LabelFor(m => m.Gender)
+    <br />
+    <div>
+        male
+        @Html.RadioButtonFor(m => m.Gender, "Male")
+        FeMale
+        @Html.RadioButtonFor(m => m.Gender, "FeMale")
+    </div>
+    <button type="submit" id="btnUpdate">
+        @ButtonValue
+    </button>
+    <a href="/MvcAjax/Single">Reset</a>
+    <br />
+    <br />
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ProductName</th>
+                    <th>Price</th>
+                    <th>
+                        <button type="button" onclick="addItem()">Add Item</button>
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="tSD">
+                @foreach (var item in Model.SaleDetails)
+                {
+                    indexItem++;
+                    <tr id="tr_@indexItem">
+                        <td>
+                            <input type="text" id="ProductName_@indexItem" name="ProductName" value="@item.ProductName" />
+                        </td>
+                        <td>
+                            <input type="text" id="Price_@indexItem" name="Price" value="@item.Price"/>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+@Html.Partial("_PartialView");
+
+<script>
+    var indexItem = @indexItem;
+    function addItem() {
+        indexItem += 1;
+        var TRs = '<tr id="tr_' + indexItem + '"><td><input type="text" id="ProductName_1" name="ProductName" value="" /></td>' + '<td><input type="text" id="Price_' + indexItem + '" name="Price" value="" /></td>'+ '</tr>';
+        document.getElementById('tSD').innerHTML += TRs;
+    }
+
+</script>
+

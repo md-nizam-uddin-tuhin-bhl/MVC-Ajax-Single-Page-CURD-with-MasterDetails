@@ -1,0 +1,23 @@
+﻿@{
+    var listSaleMaster = ViewData["List"] as List<WebApplication1.Models.SaleMaster>;
+}
+<table>
+    <tr>
+        <th>Date</th>
+        <th>Customer Name</th>
+        <th>Gender</th>
+        <th>Action</th>
+        <th>Action</th>
+    </tr>
+    @foreach (var item in listSaleMaster)
+    {
+        <tr>
+            <td>@item.CreateDate</td>
+            <td>@item.CustomerName</td>
+            <td>@item.CustomerAddress</td>
+            <td>@item.Gender</td>
+            <td><a href="/MvcAjax/Single?id=@item.SaleId">Edit</a></td>
+            <td><a href="/MvcAjax/SingleDelete?id=@item.SaleId">Delete</a></td>
+        </tr>
+    }
+</table>
